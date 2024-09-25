@@ -9,6 +9,8 @@ import SettingsScreen from '@/screens/Settings';
 import CalendarScreen from '@/screens/Calendar';
 import Tasks from '@/screens/Tasks';
 import TasksScreen from '@/screens/Tasks';
+import NotesScreen from '@/screens/Notes';
+import TimeScreen from '@/screens/Times';
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +64,16 @@ const App: React.FC = () => {
           name="Tasks"
           component={TasksScreen}
           options={{ title: 'Tasks' }} 
+         />
+         <Stack.Screen
+          name="Notes"
+          component={NotesScreen}
+          options={{ title: 'Notes' }} 
+         />
+         <Stack.Screen
+          name="Time"
+          component={TimeScreen}
+          options={{ title: 'Times' }} 
          />
       </Stack.Navigator>
     </NavigationContainer>

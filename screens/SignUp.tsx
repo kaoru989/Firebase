@@ -29,10 +29,6 @@ const SignupScreen: React.FC = () => {
     }
   };
 
-  const handleSocialSignup = (platform: string) => {
-    console.log(`Sign up with ${platform}`);
-  };
-
   return (
     <LinearGradient colors={['#6A82FB', '#FFC0CB']} style={styles.gradient}>
       <KeyboardAvoidingView 
@@ -84,17 +80,6 @@ const SignupScreen: React.FC = () => {
             <TouchableOpacity style={styles.button} onPress={handleSignup}>
               <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
-            <View style={styles.socialSignupContainer}>
-              <TouchableOpacity style={styles.socialButton} onPress={() => handleSocialSignup('google')}>
-                <FontAwesome name="google" size={24} color="#DB4437" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.socialButton} onPress={() => handleSocialSignup('facebook')}>
-                <FontAwesome name="facebook" size={24} color="#4267B2" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.socialButton} onPress={() => handleSocialSignup('github')}>
-                <FontAwesome name="github" size={24} color="#333" />
-              </TouchableOpacity>
-            </View>
             <TouchableOpacity style={styles.linkButton} onPress={() => navigation.navigate('Login' as never)}>
               <Text style={styles.linkButtonText}>Already have an account? Log In</Text>
             </TouchableOpacity>

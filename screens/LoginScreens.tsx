@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, signInWithCredential } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome } from '@expo/vector-icons';
+import * as Google from 'expo-auth-session/providers/google';
+import * as Facebook from 'expo-auth-session/providers/facebook';
 
+// Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyCXPWdKrTWGvTY-zOpQ2THMBs9lZDZRL-Q",
-  authDomain: "fir-auth-a755f.firebaseapp.com",
-  projectId: "fir-auth-a755f",
-  storageBucket: "fir-auth-a755f.appspot.com",
-  messagingSenderId: "1094099946361",
-  appId: "1:1094099946361:web:afe7a1580f89c3af333da8",
-  measurementId: "G-V3SJDMP6FC"
+  apiKey: "AIzaSyCdaC5MlHbpvtdsaO2Y-iy2ADPPAVOLvNc",
+  authDomain: "todosapp-df597.firebaseapp.com",
+  projectId: "todosapp-df597",
+  storageBucket: "todosapp-df597.appspot.com",
+  messagingSenderId: "756702315456",
+  appId: "1:756702315456:web:ac5da9055aa02102d8fe25",
+  measurementId: "G-49H0X06ZQC"
 };
 
 // Initialize Firebase
@@ -29,17 +32,54 @@ const LoginScreen: React.FC = () => {
   const [error, setError] = useState('');
   const navigation = useNavigation();
 
+  // Google login
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: '1094099946361-43n9k95do4og8g58nruspqnjlhl3223e.apps.googleusercontent.com', // Thay bằng clientId của bạn
+  });
+
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { id_token } = response.params;
+      const credential = GoogleAuthProvider.credential(id_token);
+      signInWithCredential(auth, credential)
+        .then(() => navigation.navigate('Home' as never))
+        .catch((error) => setError('Google login failed'));
+    }
+  }, [response]);
+
+  const handleGoogleLogin = () => {
+    promptAsync();
+  };
+
+  // Facebook login
+  const [fbRequest, fbResponse, fbPromptAsync] = Facebook.useAuthRequest({
+    appId: '1090404679243108',
+  });
+
+  React.useEffect(() => {
+    if (fbResponse?.type === 'success') {
+      const { token } = fbResponse.params;
+      const credential = FacebookAuthProvider.credential(token);
+      signInWithCredential(auth, credential)
+        .then(() => navigation.navigate('Home' as never))
+        .catch((error) => setError('Facebook login failed'));
+    }
+  }, [fbResponse]);
+
+  const handleFacebookLogin = () => {
+    fbPromptAsync();
+  };
+
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigation.navigate('Home' as never); // Navigate to Home
+      navigation.navigate('Home' as never);
     } catch (error) {
       setError('Invalid email or password');
+      setTimeout(() => {
+        setError('');
+      }, 5000);
     }
-  };
-
-  const handleSocialLogin = (platform: string) => {
-    console.log(`Login with ${platform}`);
   };
 
   return (
@@ -82,14 +122,11 @@ const LoginScreen: React.FC = () => {
               <Text style={styles.buttonText}>Log In</Text>
             </TouchableOpacity>
             <View style={styles.socialLoginContainer}>
-              <TouchableOpacity style={styles.socialButton} onPress={() => handleSocialLogin('google')}>
+              <TouchableOpacity style={styles.socialButton} onPress={handleGoogleLogin}>
                 <FontAwesome name="google" size={24} color="#DB4437" />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.socialButton} onPress={() => handleSocialLogin('facebook')}>
+              <TouchableOpacity style={styles.socialButton} onPress={handleFacebookLogin}>
                 <FontAwesome name="facebook" size={24} color="#4267B2" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.socialButton} onPress={() => handleSocialLogin('github')}>
-                <FontAwesome name="github" size={24} color="#333" />
               </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.forgotPassword} onPress={() => navigation.navigate('ForgotPassword' as never)}>
@@ -197,7 +234,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   signupLink: {
-    color: '#FF4F00',
+    color: '#6A82FB',
     fontSize: 16,
     fontWeight: 'bold',
     marginLeft: 5,

@@ -36,7 +36,7 @@ const TasksScreen = () => {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => deleteTask(item.id)}>
-        <Feather name="trash-2" size={24} color="red" />
+        <Feather name="trash-2" size={24} color="#FF5E62" />
       </TouchableOpacity>
     </View>
   );
@@ -53,7 +53,7 @@ const TasksScreen = () => {
           onChangeText={(text) => setNewTask(text)}
         />
         <TouchableOpacity onPress={addTask} style={styles.addButton}>
-          <Feather name="plus-circle" size={24} color="#FF5E62" />
+          <Feather name="plus-circle" size={24} color="#6A82FB" />
         </TouchableOpacity>
       </View>
 
@@ -71,12 +71,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF', // Nền trắng
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#FF5E62',
+    color: '#6A82FB', // Màu tiêu đề
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#6A82FB', // Đường viền màu
     padding: 10,
     borderRadius: 5,
   },
@@ -108,13 +108,14 @@ const styles = StyleSheet.create({
   },
   taskText: {
     fontSize: 18,
+    color: '#333', // Màu chữ
   },
   completedTask: {
-    backgroundColor: '#d3ffd3',
+    backgroundColor: '#d3ffd3', // Màu nền hoàn thành
   },
   completedTaskText: {
     textDecorationLine: 'line-through',
-    color: '#888',
+    color: '#888', // Màu chữ hoàn thành
   },
   emptyText: {
     textAlign: 'center',
